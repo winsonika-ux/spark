@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-full bg-[#111111] text-[#111111]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPARK — Зажги идею! | Творческая Платформа</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Press Start 2P & Rubik -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik:ital,wght@0,400;0,600;0,800;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Base typography & Neo-brutalism design tokens */
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: #111111;
+            color: #111111;
+        }
+
+        .font-pixel {
+            font-family: 'Press Start 2P', monospace;
+            letter-spacing: -0.5px;
+        }
+
+        /* Hard Neo-brutalist styles strictly adhering to brand colors: Fuchsia (#D82B66), Yellow (#FFC000), White (#FFFFFF), Deep Black (#111111) */
+        .nb-border {
+            border: 3.5px solid #111111;
+        }
+
+        .nb-box {
+            border: 3.5px solid #111111;
+            box-shadow: 4px 4px 0px #111111;
+            background-color: #FFFFFF;
+        }
+
+        .nb-box-fuchsia {
+            border: 3.5px solid #111111;
+            box-shadow: 4px 4px 0px #111111;
+            background-color: #D82B66;
+            color: #FFFFFF;
+        }
+
+        .nb-box-yellow {
+            border: 3.5px solid #111111;
+            box-shadow: 4px 4px 0px #111111;
+            background-color: #FFC000;
+            color: #111111;
+        }
+
+        .nb-button {
+            border: 3.5px solid #111111;
+            box-shadow: 4px 4px 0px #111111;
+            font-weight: 700;
+            transition: all 0.1s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .nb-button:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #111111;
+        }
+
+        .nb-button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #111111;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111111;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FFC000;
+            border: 2px solid #111111;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D82B66;
+        }
+
+        /* Retro Grid Pattern Background */
+        .bg-grid-pattern {
+            background-color: #111111;
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .scanline {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0, 0, 0, 0.2) 50%,
+                rgba(0, 0, 0, 0.2)
+            );
+            background-size: 100% 4px;
+        }
+
+        /* Pulse glow for PRO */
+        @keyframes pro-glow {
+            0%, 100% { box-shadow: 0 0 8px #D82B66, 4px 4px 0px #111111; }
+            50% { box-shadow: 0 0 18px #D82B66, 4px 4px 0px #111111; }
+        }
+        .pro-glow-effect {
+            animation: pro-glow 2s infinite;
+        }
+
+        /* Canvas tool selections */
+        .tool-btn.active {
+            background-color: #FFC000 !important;
+            color: #111111 !important;
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #111111 !important;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col bg-grid-pattern text-white selection:bg-[#FFC000] selection:text-[#111111]">
+
+    <!-- TOP NAV BAR -->
+    <header class="sticky top-0 z-40 bg-[#FFFFFF] text-[#111111] nb-border border-t-0 border-x-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Brand Logo -->
+            <div onclick="navTo('home')" class="flex items-center gap-3 cursor-pointer group">
+                <div class="w-12 h-12 bg-[#D82B66] text-white flex items-center justify-center font-pixel text-xl nb-border shadow-[3px_3px_0px_#111111] group-hover:rotate-6 transition-transform">
+                    ⚡
+                </div>
+                <div>
+                    <span class="font-pixel text-xl sm:text-2xl text-[#111111] tracking-wider block">SPARK</span>
+                    <span class="text-xs font-bold text-[#D82B66] tracking-widest uppercase block -mt-1">Зажги Идею!</span>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center gap-3 font-bold text-sm">
+                <button onclick="navTo('home')" id="nav-home" class="nav-link px-3 py-2 bg-[#FFC000] text-[#111111] nb-border hover:bg-[#FFC000]">
+                    <i class="fa-solid fa-lightbulb mr-1"></i> Генератор
+                </button>
+                <button onclick="navTo('workspace')" id="nav-workspace" class="nav-link px-3 py-2 bg-white text-[#111111] nb-border hover:bg-[#FFC000]">
+                    <i class="fa-solid fa-palette mr-1"></i> Мастерская
+                </button>
+                <button onclick="navTo('gallery')" id="nav-gallery" class="nav-link px-3 py-2 bg-white text-[#111111] nb-border hover:bg-[#FFC000]">
+                    <i class="fa-solid fa-[#111111] fa-images mr-1"></i> Галерея
+                </button>
+                <button onclick="navTo('profile')" id="nav-profile" class="nav-link px-3 py-2 bg-white text-[#111111] nb-border hover:bg-[#FFC000]">
+                    <i class="fa-solid fa-user-ninja mr-1"></i> Профиль
+                </button>
+                <!-- PRO Badge Highlighted Nav -->
+                <button onclick="navTo('pro')" id="nav-pro" class="nav-link px-4 py-2 bg-[#D82B66] text-white font-pixel text-xs nb-button pro-glow-effect flex items-center gap-2">
+                    <i class="fa-solid fa-crown text-[#FFC000]"></i> PRO ТАРИФЫ
+                </button>
+            </nav>
+
+            <!-- Mobile Navigation Toggle -->
+            <div class="flex items-center gap-2 md:hidden">
+                <button onclick="navTo('pro')" class="px-3 py-1.5 bg-[#D82B66] text-white font-pixel text-[10px] nb-border">
+                    <i class="fa-solid fa-crown text-[#FFC000]"></i> PRO
+                </button>
+                <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="p-2.5 bg-[#FFC000] text-[#111111] nb-border text-lg">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-[#FFFFFF] border-b-4 border-[#111111] p-4 flex-col gap-2 font-bold">
+            <button onclick="navTo('home'); toggleMobileMenu()" class="text-left w-full p-3 bg-[#FFC000] nb-border"><i class="fa-solid fa-lightbulb mr-2"></i> Генератор Идей & Упражнения</button>
+            <button onclick="navTo('workspace'); toggleMobileMenu()" class="text-left w-full p-3 bg-white nb-border"><i class="fa-solid fa-palette mr-2"></i> Мастерская (Цифра + Традишка)</button>
+            <button onclick="navTo('gallery'); toggleMobileMenu()" class="text-left w-full p-3 bg-white nb-border"><i class="fa-solid fa-images mr-2"></i> Галерея Работ</button>
+            <button onclick="navTo('profile'); toggleMobileMenu()" class="text-left w-full p-3 bg-white nb-border"><i class="fa-solid fa-user-ninja mr-2"></i> Профиль & Прогресс</button>
+            <button onclick="navTo('pro'); toggleMobileMenu()" class="text-left w-full p-3 bg-[#D82B66] text-white font-pixel text-xs nb-border"><i class="fa-solid fa-crown text-[#FFC000] mr-2"></i> PRO ПРЕМИУМ ПОДПИСКА</button>
+        </div>
+    </header>
+
+    <!-- NOTIFICATION BANNER -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-[#FFC000] text-[#111111] p-4 font-bold nb-box flex items-center gap-3">
+            <span class="text-2xl" id="toast-icon">⚡</span>
+            <span id="toast-msg">Сообщение системы</span>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- ==================== PAGE 1: HOME / GENERATOR / EXERCISES ==================== -->
+        <section id="page-home" class="app-page space-y-8">
+            
+            <!-- Hero Banner -->
+            <div class="bg-[#D82B66] text-white p-6 sm:p-10 nb-box relative overflow-hidden">
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <div class="inline-block px-3 py-1 bg-[#FFC000] text-[#111111] font-pixel text-xs nb-border uppercase">
+                        +100 XP АРТ-ИМПУЛЬС
+                    </div>
+                    <h1 class="font-pixel text-2xl sm:text-4xl text-white leading-relaxed">
+                        ПОБЕДИ ТВОРЧЕСКИЙ КРИЗИС ЗА 1 КЛИК!
+                    </h1>
+                    <p class="text-lg font-semibold text-white/90">
+                        Генерируй случайные арты, выполняй интерактивные упражнения для цифрового и традиционного рисования.
+                    </p>
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <button onclick="generateIdea()" class="nb-button bg-[#FFC000] text-[#111111] px-6 py-3 font-pixel text-xs uppercase flex items-center gap-2">
+                            <i class="fa-solid fa-[#111111] fa-dice text-base"></i> Зажечь Новую Идею
+                        </button>
+                        <button onclick="navTo('pro')" class="nb-button bg-white text-[#111111] px-5 py-3 font-bold text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-crown text-[#D82B66]"></i> Разблокировать PRO Идеи
+                        </button>
+                    </div>
+                </div>
+                <!-- Pixel Star Deco -->
+                <div class="absolute right-4 bottom-4 opacity-20 text-9xl font-pixel select-none pointer-events-none">
+                    ★
+                </div>
+            </div>
+
+            <!-- Idea Generator Box -->
+            <div class="bg-white text-[#111111] p-6 sm:p-8 nb-box space-y-6">
+                <div class="flex flex-wrap items-center justify-between gap-4 border-b-4 border-[#111111] pb-4">
+                    <h2 class="font-pixel text-lg sm:text-xl flex items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-[#D82B66]"></i> СЛУЧАЙНЫЙ ГЕНЕРАТОР
+                    </h2>
+                    
+                    <!-- Filters & Mode Selector -->
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="text-xs font-bold uppercase">Режим:</span>
+                        <button id="btn-mode-all" onclick="setGenMode('all')" class="px-3 py-1 text-xs font-bold bg-[#FFC000] text-[#111111] nb-border">Все</button>
+                        <button id="btn-mode-digital" onclick="setGenMode('digital')" class="px-3 py-1 text-xs font-bold bg-white text-[#111111] nb-border">Цифра</button>
+                        <button id="btn-mode-trad" onclick="setGenMode('trad')" class="px-3 py-1 text-xs font-bold bg-white text-[#111111] nb-border">Традишка</button>
+                        
+                        <!-- Locked PRO Filter -->
+                        <button onclick="promptProFeature('Продвинутые генераторы персонажей и лора')" class="px-3 py-1 text-xs font-pixel bg-[#111111] text-[#FFC000] nb-border flex items-center gap-1">
+                            <i class="fa-solid fa-lock text-[#D82B66]"></i> CYBER-PUNK / LORE (PRO)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Generated Prompt Display Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="prompt-cards">
+                    <div class="bg-[#111111] text-white p-4 nb-border space-y-2">
+                        <span class="text-xs font-pixel text-[#FFC000] uppercase block">Персонаж / Объект</span>
+                        <p id="prompt-subject" class="font-bold text-lg text-white">Механический кот-курьер</p>
+                    </div>
+                    <div class="bg-[#111111] text-white p-4 nb-border space-y-2">
+                        <span class="text-xs font-pixel text-[#D82B66] uppercase block">Стиль & Цветовая Гамма</span>
+                        <p id="prompt-style" class="font-bold text-lg text-white">Нео-брутализм + Ограниченная 3-цветная палитра</p>
+                    </div>
+                    <div class="bg-[#111111] text-white p-4 nb-border space-y-2">
+                        <span class="text-xs font-pixel text-[#FFC000] uppercase block">Обстановка / Ограничение</span>
+                        <p id="prompt-setting" class="font-bold text-lg text-white">Дождливый ночной базар (Время: 15 минут)</p>
+                    </div>
+                </div>
+
+                <!-- Action Toolbar -->
+                <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
+                    <button onclick="generateIdea()" class="nb-button bg-[#FFC000] text-[#111111] px-6 py-3 font-pixel text-xs uppercase flex items-center gap-2">
+                        <i class="fa-solid fa-rotate"></i> Сгенерировать Снова
+                    </button>
+
+                    <div class="flex items-center gap-2">
+                        <button onclick="sendPromptToWorkspace()" class="nb-button bg-[#D82B66] text-white px-5 py-3 font-bold text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-paintbrush"></i> Начать Рисовать с этим Промптом
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Creative Exercises List Section -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="font-pixel text-xl text-white flex items-center gap-2">
+                        <i class="fa-solid fa-dumbbell text-[#FFC000]"></i> АРТ-ТРЕНАЖЕРЫ & УПРАЖНЕНИЯ
+                    </h2>
+                    <span class="text-xs font-bold text-[#FFC000] bg-[#111111] px-3 py-1 nb-border">Доступно 6 Тренажеров</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Free Exercise 1 -->
+                    <div class="bg-white text-[#111111] p-5 nb-box flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-start">
+                                <span class="bg-[#FFC000] text-[#111111] text-[10px] font-pixel px-2 py-1 nb-border">БАЗОВЫЙ</span>
+                                <span class="text-xs font-bold text-gray-500"> Цифра + Традишка</span>
+                            </div>
+                            <h3 class="font-pixel text-base text-[#111111]">1. Слепое Рисование</h3>
+                            <p class="text-sm font-semibold text-gray-700">Нарисуйте автопортрет или предмет, не глядя на холст/бумагу в течение 3 минут!</p>
+                        </div>
+                        <button onclick="startExercise('Слепое Рисование')" class="nb-button bg-[#111111] text-white w-full py-2.5 text-xs font-pixel">
+                            СТАРТ (+50 XP)
+                        </button>
+                    </div>
+
+                    <!-- Free Exercise 2 -->
+                    <div class="bg-white text-[#111111] p-5 nb-box flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-start">
+                                <span class="bg-[#FFC000] text-[#111111] text-[10px] font-pixel px-2 py-1 nb-border">БАЗОВЫЙ</span>
+                                <span class="text-xs font-bold text-gray-500"> Цифра</span>
+                            </div>
+                            <h3 class="font-pixel text-base text-[#111111]">2. Пятно в Персонажа</h3>
+                            <p class="text-sm font-semibold text-gray-700">Сгенерируйте случайную силуэтную кляксу на холсте и превратите её в монстра или героя.</p>
+                        </div>
+                        <button onclick="startExercise('Пятно в Персонажа')" class="nb-button bg-[#111111] text-white w-full py-2.5 text-xs font-pixel">
+                            СТАРТ (+70 XP)
+                        </button>
+                    </div>
+
+                    <!-- Free Exercise 3 -->
+                    <div class="bg-white text-[#111111] p-5 nb-box flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-start">
+                                <span class="bg-[#FFC000] text-[#111111] text-[10px] font-pixel px-2 py-1 nb-border">БАЗОВЫЙ</span>
+                                <span class="text-xs font-bold text-gray-500"> Традишка</span>
+                            </div>
+                            <h3 class="font-pixel text-base text-[#111111]">3. Быстрые Наброски</h3>
+                            <p class="text-sm font-semibold text-gray-700">10 набросков предметов вокруг вас. По 30 секунд на один рисунок в скетчбуке.</p>
+                        </div>
+                        <button onclick="startExercise('Быстрые Наброски')" class="nb-button bg-[#111111] text-white w-full py-2.5 text-xs font-pixel">
+                            СТАРТ (+60 XP)
+                        </button>
+                    </div>
+
+                    <!-- Locked PRO Exercise 4 -->
+                    <div class="bg-[#111111] text-white p-5 nb-border shadow-[4px_4px_0px_#D82B66] flex flex-col justify-between space-y-4 relative overflow-hidden">
+                        <div class="absolute -right-6 -top-6 bg-[#D82B66] text-white font-pixel text-[9px] px-8 py-2 rotate-45 nb-border">
+                            PRO
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-lock text-[#FFC000]"></i>
+                                <span class="text-xs font-pixel text-[#D82B66]">PRO ЭКСПЕРТ</span>
+                            </div>
+                            <h3 class="font-pixel text-base text-white">4. Анатомический Спринт 3D</h3>
+                            <p class="text-sm text-gray-300">Продвинутые динамические позы с таймером и интерактивным 3D-манекеном освещения.</p>
+                        </div>
+                        <button onclick="promptProFeature('Анатомический Спринт 3D')" class="nb-button bg-[#D82B66] text-white w-full py-2.5 text-xs font-pixel flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-crown text-[#FFC000]"></i> ОТКРЫТЬ С PRO
+                        </button>
+                    </div>
+
+                    <!-- Locked PRO Exercise 5 -->
+                    <div class="bg-[#111111] text-white p-5 nb-border shadow-[4px_4px_0px_#D82B66] flex flex-col justify-between space-y-4 relative overflow-hidden">
+                        <div class="absolute -right-6 -top-6 bg-[#D82B66] text-white font-pixel text-[9px] px-8 py-2 rotate-45 nb-border">
+                            PRO
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-lock text-[#FFC000]"></i>
+                                <span class="text-xs font-pixel text-[#D82B66]">PRO ЭКСПЕРТ</span>
+                            </div>
+                            <h3 class="font-pixel text-base text-white">5. Цветовой Челлендж 2 Цвета</h3>
+                            <p class="text-sm text-gray-300">Ограничение жесткой палитры из двух случайных контрастных оттенков Pantone.</p>
+                        </div>
+                        <button onclick="promptProFeature('Цветовой Челлендж 2 Цвета')" class="nb-button bg-[#D82B66] text-white w-full py-2.5 text-xs font-pixel flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-crown text-[#FFC000]"></i> ОТКРЫТЬ С PRO
+                        </button>
+                    </div>
+
+                    <!-- Locked PRO Exercise 6 -->
+                    <div class="bg-[#111111] text-white p-5 nb-border shadow-[4px_4px_0px_#D82B66] flex flex-col justify-between space-y-4 relative overflow-hidden">
+                        <div class="absolute -right-6 -top-6 bg-[#D82B66] text-white font-pixel text-[9px] px-8 py-2 rotate-45 nb-border">
+                            PRO
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-lock text-[#FFC000]"></i>
+                                <span class="text-xs font-pixel text-[#D82B66]">PRO ЭКСПЕРТ</span>
+                            </div>
+                            <h3 class="font-pixel text-base text-white">6. Изометрический Город</h3>
+                            <p class="text-sm text-gray-300">Пошаговое построение изометрической локации по профессиональной сетке.</p>
+                        </div>
+                        <button onclick="promptProFeature('Изометрический Город')" class="nb-button bg-[#D82B66] text-white w-full py-2.5 text-xs font-pixel flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-crown text-[#FFC000]"></i> ОТКРЫТЬ С PRO
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PAGE 2: WORKSPACE (DIGITAL & TRADITIONAL) ==================== -->
+        <section id="page-workspace" class="app-page hidden space-y-6">
+            
+            <!-- Header Mode Switcher -->
+            <div class="bg-white text-[#111111] p-4 nb-box flex flex-wrap items-center justify-between gap-4">
+                <div>
+                    <h2 class="font-pixel text-xl text-[#111111] flex items-center gap-2">
+                        <i class="fa-solid fa-paintbrush text-[#D82B66]"></i> МАСТЕРСКАЯ
+                    </h2>
+                    <p class="text-xs font-bold text-gray-600">Текущая задача: <span id="current-task-display" class="text-[#D82B66]">Свободное рисование</span></p>
+                </div>
+
+                <!-- Dual Art Mode Tabs -->
+                <div class="flex items-center bg-[#111111] p-1.5 nb-border gap-1">
+                    <button id="tab-art-digital" onclick="switchArtMode('digital')" class="px-4 py-2 font-pixel text-xs bg-[#FFC000] text-[#111111] nb-border flex items-center gap-2">
+                        <i class="fa-solid fa-laptop text-sm"></i> Цифровой Холст
+                    </button>
+                    <button id="tab-art-trad" onclick="switchArtMode('trad')" class="px-4 py-2 font-pixel text-xs bg-white text-[#111111] hover:bg-gray-200 flex items-center gap-2">
+                        <i class="fa-solid fa-camera text-sm"></i> Сканер Традишки
+                    </button>
+                </div>
+            </div>
+
+            <!-- MODE 1: DIGITAL HTML5 CANVAS WORKSPACE -->
+            <div id="art-mode-digital-view" class="space-y-4">
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    
+                    <!-- Tools Panel -->
+                    <div class="bg-white text-[#111111] p-5 nb-box space-y-6 lg:col-span-1">
+                        <h3 class="font-pixel text-xs text-[#111111] border-b-4 border-[#111111] pb-2 uppercase">Инструменты</h3>
+                        
+                        <!-- Drawing Tools -->
+                        <div class="grid grid-cols-2 gap-2">
+                            <button id="tool-brush" onclick="selectTool('brush')" class="tool-btn active p-3 nb-button bg-white text-xs font-bold flex flex-col items-center gap-1">
+                                <i class="fa-solid fa-paint-brush text-lg"></i> Кисть
+                            </button>
+                            <button id="tool-eraser" onclick="selectTool('eraser')" class="tool-btn p-3 nb-button bg-white text-xs font-bold flex flex-col items-center gap-1">
+                                <i class="fa-solid fa-eraser text-lg"></i> Ластик
+                            </button>
+                        </div>
+
+                        <!-- Size Slider -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs font-bold">
+                                <span>Размер:</span>
+                                <span id="brush-size-val">5 px</span>
+                            </div>
+                            <input type="range" id="brush-size" min="1" max="50" value="5" oninput="updateBrushSize(this.value)" class="w-full accent-[#D82B66]">
+                        </div>
+
+                        <!-- Color Palette -->
+                        <div class="space-y-2">
+                            <span class="text-xs font-bold block">Цвет Кисти:</span>
+                            <div class="flex items-center gap-2">
+                                <input type="color" id="color-picker" value="#111111" onchange="setCustomColor(this.value)" class="w-10 h-10 nb-border cursor-pointer bg-transparent">
+                                <div class="grid grid-cols-4 gap-1 flex-grow">
+                                    <button onclick="setCustomColor('#111111')" class="h-8 bg-[#111111] nb-border"></button>
+                                    <button onclick="setCustomColor('#D82B66')" class="h-8 bg-[#D82B66] nb-border"></button>
+                                    <button onclick="setCustomColor('#FFC000')" class="h-8 bg-[#FFC000] nb-border"></button>
+                                    <button onclick="setCustomColor('#3B82F6')" class="h-8 bg-[#3B82F6] nb-border"></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Clear Canvas & Actions -->
+                        <div class="pt-4 border-t-4 border-[#111111] space-y-2">
+                            <button onclick="clearCanvas()" class="nb-button bg-red-100 text-red-700 w-full py-2 text-xs font-bold flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-trash-can"></i> Очистить Холст
+                            </button>
+                            <button onclick="publishDigitalArt()" class="nb-button bg-[#FFC000] text-[#111111] w-full py-3 font-pixel text-xs flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-upload"></i> Опубликовать
+                            </button>
+                        </div>
+
+                        <!-- PRO Canvas Perks Promo -->
+                        <div class="bg-[#111111] text-white p-3 nb-border space-y-2 text-xs">
+                            <div class="flex items-center justify-between font-pixel text-[10px] text-[#FFC000]">
+                                <span>PRO СЛОИ & КИСТИ</span>
+                                <i class="fa-solid fa-crown text-[#D82B66]"></i>
+                            </div>
+                            <p class="text-[11px] text-gray-300">Разблокируйте слои, экспорт PSD и гиф-анимации в PRO версии.</p>
+                            <button onclick="navTo('pro')" class="text-[#FFC000] font-bold underline hover:text-white block">Узнать подробнее →</button>
+                        </div>
+                    </div>
+
+                    <!-- Canvas Area -->
+                    <div class="bg-white p-4 nb-box lg:col-span-3 flex flex-col items-center justify-center min-h-[450px]">
+                        <div class="w-full h-full flex flex-col items-center justify-center relative">
+                            <canvas id="digital-canvas" class="bg-white nb-border cursor-crosshair max-w-full touch-none"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- MODE 2: TRADITIONAL SKETCHBOOK UPLOADER -->
+            <div id="art-mode-trad-view" class="hidden bg-white text-[#111111] p-6 sm:p-10 nb-box space-y-6">
+                <div class="max-w-2xl mx-auto space-y-6 text-center">
+                    <div class="w-16 h-16 bg-[#FFC000] text-[#111111] font-pixel text-2xl mx-auto flex items-center justify-center nb-border">
+                        📸
+                    </div>
+                    <h3 class="font-pixel text-xl text-[#111111]">ЗАГРУЗКА РИСУНКА ИЗ СКЕТЧБУКА</h3>
+                    <p class="text-sm font-semibold text-gray-700">
+                        Нарисовали работу в традиционном формате маркерами, карандашом или акварелью? Сфотографируйте страницу и загрузите в арт-галерею!
+                    </p>
+
+                    <!-- Upload Box -->
+                    <div class="border-4 border-dashed border-[#111111] p-8 bg-gray-50 nb-border flex flex-col items-center justify-center space-y-4 cursor-pointer hover:bg-gray-100 transition-colors" onclick="document.getElementById('file-input-trad').click()">
+                        <i class="fa-solid fa-cloud-arrow-up text-5xl text-[#D82B66]"></i>
+                        <span class="font-bold text-base text-[#111111]">Перетащите фото сюда или нажмите для выбора</span>
+                        <span class="text-xs text-gray-500 font-bold">Поддерживаются PNG, JPG, WEBP (до 10MB)</span>
+                        <input type="file" id="file-input-trad" class="hidden" accept="image/*" onchange="previewTradImage(event)">
+                    </div>
+
+                    <!-- Uploaded Image Preview -->
+                    <div id="trad-preview-container" class="hidden space-y-4 pt-4 border-t-4 border-[#111111]">
+                        <h4 class="font-pixel text-xs text-[#111111] uppercase">Предпросмотр:</h4>
+                        <img id="trad-preview-img" src="" alt="Предпросмотр" class="max-h-80 mx-auto nb-border shadow-md">
+                        
+                        <div class="flex justify-center gap-3">
+                            <button onclick="publishTradArt()" class="nb-button bg-[#D82B66] text-white px-8 py-3 font-pixel text-xs">
+                                <i class="fa-solid fa-check mr-2"></i> Опубликовать в Галерею
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ==================== PAGE 3: COMMUNITY GALLERY ==================== -->
+        <section id="page-gallery" class="app-page hidden space-y-6">
+            
+            <div class="bg-white text-[#111111] p-6 nb-box flex flex-wrap items-center justify-between gap-4">
+                <div>
+                    <h2 class="font-pixel text-xl flex items-center gap-2">
+                        <i class="fa-solid fa-images text-[#FFC000]"></i> ГАЛЕРЕЯ СООБЩЕСТВА
+                    </h2>
+                    <p class="text-xs font-bold text-gray-600">Вдохновляйтесь works других художников платформы SPARK</p>
+                </div>
+
+                <!-- Gallery Filter Buttons -->
+                <div class="flex items-center gap-2">
+                    <button class="px-3 py-1.5 font-bold text-xs bg-[#FFC000] text-[#111111] nb-border">Все Работы</button>
+                    <button class="px-3 py-1.5 font-bold text-xs bg-white text-[#111111] nb-border hover:bg-gray-100">Топ Недели</button>
+                    <button class="px-3 py-1.5 font-bold text-xs bg-white text-[#111111] nb-border hover:bg-gray-100"><i class="fa-solid fa-crown text-[#D82B66] mr-1"></i> PRO Работы</button>
+                </div>
+            </div>
+
+            <!-- Gallery Grid Container -->
+            <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamic cards populated via JS -->
+            </div>
+        </section>
+
+        <!-- ==================== PAGE 4: USER PROFILE ==================== -->
+        <section id="page-profile" class="app-page hidden space-y-6">
+            
+            <!-- User Info Header -->
+            <div class="bg-white text-[#111111] p-6 sm:p-8 nb-box space-y-6">
+                <div class="flex flex-col sm:flex-row items-center gap-6">
+                    
+                    <!-- Avatar -->
+                    <div class="relative">
+                        <div class="w-24 h-24 bg-[#FFC000] nb-border flex items-center justify-center font-pixel text-4xl">
+                            🎨
+                        </div>
+                        <span id="profile-pro-badge" class="absolute -bottom-2 -right-2 bg-[#D82B66] text-white text-[9px] font-pixel px-2 py-1 nb-border">
+                            FREE
+                        </span>
+                    </div>
+
+                    <!-- Details -->
+                    <div class="space-y-2 text-center sm:text-left flex-grow">
+                        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-3">
+                            <h2 class="font-pixel text-xl sm:text-2xl text-[#111111]">Арт-Ниндзя #4082</h2>
+                            <span id="profile-status-pill" class="bg-[#111111] text-[#FFC000] text-xs font-pixel px-3 py-1 nb-border">
+                                Базовый Художник
+                            </span>
+                        </div>
+                        <p class="text-sm font-semibold text-gray-600">На платформе SPARK с Октября 2026 • 12 Выполненных челленджей</p>
+                        
+                        <!-- Level Progress Bar -->
+                        <div class="space-y-1 max-w-md pt-2">
+                            <div class="flex justify-between text-xs font-pixel">
+                                <span>Уровень 3 (Художник-Исследователь)</span>
+                                <span>450 / 1000 XP</span>
+                            </div>
+                            <div class="w-full h-4 bg-gray-200 nb-border overflow-hidden">
+                                <div class="h-full bg-[#D82B66]" style="width: 45%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Upgrade CTA in Profile -->
+                    <div class="sm:self-start">
+                        <button onclick="navTo('pro')" class="nb-button bg-[#D82B66] text-white px-4 py-3 font-pixel text-xs flex items-center gap-2 pro-glow-effect">
+                            <i class="fa-solid fa-crown text-[#FFC000]"></i> УЛУЧШИТЬ ДО PRO
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Stats Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div class="bg-white text-[#111111] p-4 nb-box text-center space-y-1">
+                    <span class="font-pixel text-2xl text-[#D82B66] block">14</span>
+                    <span class="text-xs font-bold uppercase text-gray-600">Рисунков</span>
+                </div>
+                <div class="bg-white text-[#111111] p-4 nb-box text-center space-y-1">
+                    <span class="font-pixel text-2xl text-[#FFC000] block">8</span>
+                    <span class="text-xs font-bold uppercase text-gray-600">Наград</span>
+                </div>
+                <div class="bg-white text-[#111111] p-4 nb-box text-center space-y-1">
+                    <span class="font-pixel text-2xl text-[#111111] block">450</span>
+                    <span class="text-xs font-bold uppercase text-gray-600">Всего XP</span>
+                </div>
+                <div class="bg-white text-[#111111] p-4 nb-box text-center space-y-1">
+                    <span class="font-pixel text-2xl text-[#D82B66] block">🔥 5</span>
+                    <span class="text-xs font-bold uppercase text-gray-600">Дней Подряд</span>
+                </div>
+            </div>
+
+            <!-- User Saved Works Gallery -->
+            <div class="bg-white text-[#111111] p-6 nb-box space-y-4">
+                <h3 class="font-pixel text-lg border-b-4 border-[#111111] pb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-folder-open text-[#D82B66]"></i> МОЯ ЛИЧНАЯ ГАЛЕРЕЯ
+                </h3>
+                <div id="profile-gallery-grid" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <!-- Dynamic Profile Posts -->
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ==================== PAGE 5: DEDICATED PREMIUM / PRO SUBSCRIPTION PAGE ==================== -->
+        <section id="page-pro" class="app-page hidden space-y-10">
+            
+            <!-- Pro Hero Banner -->
+            <div class="bg-[#111111] text-white p-8 sm:p-12 nb-border shadow-[6px_6px_0px_#D82B66] text-center space-y-6 relative overflow-hidden">
+                <div class="inline-block px-4 py-1.5 bg-[#D82B66] text-white font-pixel text-xs nb-border uppercase tracking-widest">
+                    ⚡ ТВОЙ ТВОРЧЕСКИЙ УСКОРИТЕЛЬ
+                </div>
+                
+                <h1 class="font-pixel text-3xl sm:text-5xl text-white leading-tight">
+                    ПОДПИСКА <span class="text-[#FFC000]">SPARK PRO</span>
+                </h1>
+                
+                <p class="text-base sm:text-lg text-gray-300 max-w-2xl mx-auto font-semibold">
+                    Раскройте 100% потенциал платформы: неограниченные генерации, эксклюзивные 3D упражнения, слои в цифровом холсте и PRO-статус в арт-сообществе.
+                </p>
+
+                <!-- Billing Cycle Switcher Toggle -->
+                <div class="pt-4 flex items-center justify-center gap-4">
+                    <span id="label-monthly" class="font-pixel text-xs text-[#FFC000]">ЕЖЕМЕСЯЧНО</span>
+                    <button onclick="toggleBillingCycle()" id="toggle-billing-btn" class="w-16 h-8 bg-[#D82B66] nb-border relative rounded-full p-1 transition-colors">
+                        <div id="toggle-circle" class="w-6 h-6 bg-[#FFC000] nb-border transition-transform transform translate-x-0"></div>
+                    </button>
+                    <div class="flex items-center gap-2">
+                        <span id="label-yearly" class="font-pixel text-xs text-gray-400">ЕЖЕГОДНО</span>
+                        <span class="bg-[#FFC000] text-[#111111] text-[10px] font-pixel px-2 py-0.5 nb-border">-20% СКИДКА</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subscription Tiers Pricing Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                
+                <!-- FREE TARIFF CARD -->
+                <div class="bg-white text-[#111111] p-8 nb-box flex flex-col justify-between space-y-6">
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-pixel text-xl">БАЗОВЫЙ</h3>
+                                <p class="text-xs font-bold text-gray-500">Для начинающих любителей</p>
+                            </div>
+                            <span class="font-pixel text-xs bg-gray-200 px-3 py-1 nb-border">FREE</span>
+                        </div>
+
+                        <div class="py-4 border-y-4 border-[#111111]">
+                            <span class="font-pixel text-4xl">0 ₽</span>
+                            <span class="text-sm font-bold text-gray-500"> / навсегда</span>
+                        </div>
+
+                        <ul class="space-y-3 font-semibold text-sm">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-600 text-base"></i> Базовый генератор идей (300+ тем)</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-600 text-base"></i> Доступ к 3 бесплатным арт-тренажерам</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-600 text-base"></i> HTML5 Canvas + Сканер традишки</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-600 text-base"></i> Публикация работ в общую галерею</li>
+                            <li class="flex items-center gap-2 text-gray-400 line-through"><i class="fa-solid fa-xmark text-red-400 text-base"></i> Продвинутые генераторы персонажей</li>
+                            <li class="flex items-center gap-2 text-gray-400 line-through"><i class="fa-solid fa-xmark text-red-400 text-base"></i> 3D анатомический тренажер</li>
+                        </ul>
+                    </div>
+
+                    <button class="w-full py-3 bg-gray-200 text-gray-600 font-pixel text-xs nb-border cursor-not-allowed">
+                        ТЕКУЩИЙ ТАРИФ
+                    </button>
+                </div>
+
+                <!-- PRO TARIFF CARD (HIGHLIGHTED) -->
+                <div class="bg-[#D82B66] text-white p-8 nb-box relative flex flex-col justify-between space-y-6 transform md:-translate-y-2">
+                    <div class="absolute -top-4 right-6 bg-[#FFC000] text-[#111111] font-pixel text-xs px-4 py-1.5 nb-border uppercase">
+                        🔥 ПОПУЛЯРНЫЙ ВЫБОР
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-pixel text-2xl text-white">SPARK PRO</h3>
+                                <p class="text-xs font-bold text-white/80">Максимальный набор инструментов</p>
+                            </div>
+                            <span class="font-pixel text-xs bg-[#FFC000] text-[#111111] px-3 py-1 nb-border">PRO</span>
+                        </div>
+
+                        <div class="py-4 border-y-4 border-[#111111]">
+                            <span id="price-display" class="font-pixel text-4xl text-[#FFC000]">390 ₽</span>
+                            <span id="price-period" class="text-sm font-bold text-white/90"> / месяц</span>
+                        </div>
+
+                        <ul class="space-y-3 font-semibold text-sm text-white">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-[#FFC000] text-base"></i> Все возможности бесплатной версии</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-[#FFC000] text-base"></i> <strong>Полный доступ к PRO тренажерам (3D Анатомия, Изометрия)</strong></li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-[#FFC000] text-base"></i> Специализированный Cyberpunk / Lore Генератор</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-[#FFC000] text-base"></i> Поддержка слоев и PSD экспорта в Холсте</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-[#FFC000] text-base"></i> Выделяющийся золотой значок PRO в Профиле и Галерее</li>
+                            <li class="flex items-center gap-2"><li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-[#FFC000] text-base"></i> Приоритет в топе Галереи Сообщества</li>
+                        </ul>
+                    </div>
+
+                    <button onclick="openCheckoutModal()" class="nb-button bg-[#FFC000] text-[#111111] w-full py-4 font-pixel text-xs uppercase text-center tracking-wider">
+                        <i class="fa-solid fa-bolt mr-2"></i> Оформить Подписку PRO
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Perks Breakdown Grid for Digital & Traditional Artists -->
+            <div class="bg-white text-[#111111] p-8 nb-box space-y-6">
+                <h3 class="font-pixel text-xl text-center border-b-4 border-[#111111] pb-4">
+                    ПОЧЕМУ ХУДОЖНИКИ ВЫБИРАЮТ SPARK PRO?
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-2">
+                    
+                    <!-- Digital Artists Benefits -->
+                    <div class="p-6 bg-gray-50 nb-border space-y-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-[#FFC000] nb-border flex items-center justify-center font-pixel text-lg">💻</div>
+                            <h4 class="font-pixel text-base">Для Цифровых Художников</h4>
+                        </div>
+                        <p class="text-sm text-gray-700 font-semibold leading-relaxed">
+                            Расширенные кисти, неограниченный холст высокой четкости, генератор световых схем для 3D моделей и возможность прямого экспорта проектов без сжатия.
+                        </p>
+                    </div>
+
+                    <!-- Traditional Artists Benefits -->
+                    <div class="p-6 bg-gray-50 nb-border space-y-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-[#D82B66] text-white nb-border flex items-center justify-center font-pixel text-lg">🎨</div>
+                            <h4 class="font-pixel text-base">Для Традиционных Художников</h4>
+                        </div>
+                        <p class="text-sm text-gray-700 font-semibold leading-relaxed">
+                            Автоматическая коррекция контрастности и авто-кадрирование при сканировании рисунков из скетчбуков через мобильную камеру.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- CHECKOUT MODAL WINDOW -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 bg-black/80 hidden items-center justify-center p-4">
+        <div class="bg-white text-[#111111] max-w-md w-full p-6 sm:p-8 nb-box space-y-6 relative">
+            <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 w-8 h-8 bg-[#111111] text-white font-pixel text-xs nb-border flex items-center justify-center">
+                ✕
+            </button>
+
+            <div class="text-center space-y-2">
+                <div class="w-12 h-12 bg-[#D82B66] text-white font-pixel text-xl mx-auto flex items-center justify-center nb-border">
+                    ⚡
+                </div>
+                <h3 class="font-pixel text-xl">ОФОРМЛЕНИЕ PRO</h3>
+                <p class="text-xs font-bold text-gray-600">Вы выбираете тариф <span id="modal-plan-name" class="text-[#D82B66]">SPARK PRO (Месячный)</span></p>
+            </div>
+
+            <!-- Payment Details Form -->
+            <form onsubmit="handlePaymentSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-pixel mb-1">ИМЯ НА КАРТЕ</label>
+                    <input type="text" required placeholder="ARTIST NAME" class="w-full p-3 bg-gray-50 nb-border font-bold text-sm focus:outline-none focus:bg-white">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-pixel mb-1">НОМЕР КАРТЫ</label>
+                    <input type="text" required placeholder="4000 0000 0000 0000" class="w-full p-3 bg-gray-50 nb-border font-bold text-sm focus:outline-none focus:bg-white">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-pixel mb-1">СРОК (ММ/ГГ)</label>
+                        <input type="text" required placeholder="12/28" class="w-full p-3 bg-gray-50 nb-border font-bold text-sm focus:outline-none focus:bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-pixel mb-1">CVC / CWW</label>
+                        <input type="password" required maxlength="3" placeholder="***" class="w-full p-3 bg-gray-50 nb-border font-bold text-sm focus:outline-none focus:bg-white">
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="nb-button bg-[#FFC000] text-[#111111] w-full py-4 font-pixel text-xs uppercase flex items-center justify-center gap-2">
+                        ОПЛАТИТЬ <span id="modal-pay-amount">390 ₽</span>
+                    </button>
+                </div>
+
+                <p class="text-[10px] text-center text-gray-500 font-bold">
+                    🔒 Демонстрационный режим оплаты. Ваша карта не будет списана.
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#111111] text-white border-t-4 border-[#FFFFFF] py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-4">
+            <div class="flex items-center justify-center gap-2">
+                <span class="font-pixel text-xl text-[#FFC000]">SPARK</span>
+                <span class="text-xs font-bold text-[#D82B66]">— Твое Творческое Вдохновение</span>
+            </div>
+            <p class="text-xs text-gray-400 font-semibold max-w-md mx-auto">
+                Создано для художников всех уровней: от скетчбука до цифровых планшетов.
+            </p>
+            <div class="text-[11px] text-gray-500 font-pixel pt-2">
+                © 2026 SPARK ART INC. ВСЕ ПРАВА ЗАЩИЩЕНЫ.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Global Application State
+        const state = {
+            currentPage: 'home',
+            isProUser: false,
+            genMode: 'all', // 'all', 'digital', 'trad'
+            billingCycle: 'monthly', // 'monthly', 'yearly'
+            canvasTool: 'brush',
+            brushSize: 5,
+            brushColor: '#111111',
+            isDrawing: false,
+            galleryItems: [
+                { id: 1, title: 'Кибер-Самурай', author: 'Алекс_Art', type: 'Цифра', isPro: true, likes: 42, icon: '⚔️', color: '#D82B66' },
+                { id: 2, title: 'Скетч Заброшенного Сада', author: 'Мария_Пенсил', type: 'Традишка', isPro: false, likes: 19, icon: '🌿', color: '#FFC000' },
+                { id: 3, title: 'Космический Кит', author: 'CosmoDraw', type: 'Цифра', isPro: true, likes: 88, icon: '🐋', color: '#3B82F6' },
+                { id: 4, title: 'Быстрый портрет маркерами', author: 'Скетчер_99', type: 'Традишка', isPro: false, likes: 31, icon: '🎨', color: '#111111' }
+            ],
+            prompts: {
+                subjects: ['Механический кот-курьер', 'Древнее существо из леса', 'Неоновый самурай в метро', 'Парящий островок с маяком', 'Робот, пьющий чай'],
+                styles: ['Нео-брутализм + Ограниченная 3-цветная палитра', 'Пиксель-арт 16x16', 'Акварельные подтеки + Четкий контур', 'Киберпанк нуар', 'Минималистичный линейный скетч'],
+                settings: ['Дождливый ночной базар (Время: 15 минут)', 'Солнечный полдень в деревне', 'Подводный заброшенный город', 'Космическая станция 80-х']
+            }
+        };
+
+        // Navigation Controller
+        function navTo(pageId) {
+            state.currentPage = pageId;
+            
+            // Hide all pages
+            document.querySelectorAll('.app-page').forEach(page => page.classList.add('hidden'));
+            
+            // Show requested page
+            const target = document.getElementById('page-' + pageId);
+            if (target) target.classList.remove('hidden');
+
+            // Update Nav buttons state
+            document.querySelectorAll('.nav-link').forEach(btn => {
+                btn.classList.remove('bg-[#FFC000]');
+                btn.classList.add('bg-white');
+            });
+
+            const activeBtn = document.getElementById('nav-' + pageId);
+            if (activeBtn && pageId !== 'pro') {
+                activeBtn.classList.remove('bg-white');
+                activeBtn.classList.add('bg-[#FFC000]');
+            }
+
+            // Canvas resize check if switching to workspace
+            if (pageId === 'workspace') {
+                setTimeout(resizeCanvas, 100);
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Toggle Mobile Navigation
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('flex');
+        }
+
+        // Toast Notifications
+        function showToast(msg, icon = '⚡') {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            document.getElementById('toast-icon').innerText = icon;
+
+            toast.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        // Idea Generator Functionality
+        function setGenMode(mode) {
+            state.genMode = mode;
+            ['all', 'digital', 'trad'].forEach(m => {
+                const btn = document.getElementById('btn-mode-' + m);
+                if (m === mode) {
+                    btn.classList.remove('bg-white');
+                    btn.classList.add('bg-[#FFC000]');
+                } else {
+                    btn.classList.remove('bg-[#FFC000]');
+                    btn.classList.add('bg-white');
+                }
+            });
+            generateIdea();
+        }
+
+        function generateIdea() {
+            const subj = state.prompts.subjects[Math.floor(Math.random() * state.prompts.subjects.length)];
+            const style = state.prompts.styles[Math.floor(Math.random() * state.prompts.styles.length)];
+            const setting = state.prompts.settings[Math.floor(Math.random() * state.prompts.settings.length)];
+
+            document.getElementById('prompt-subject').innerText = subj;
+            document.getElementById('prompt-style').innerText = style;
+            document.getElementById('prompt-setting').innerText = setting;
+
+            showToast('Сгенерирована новая идея!', '🎲');
+        }
+
+        function sendPromptToWorkspace() {
+            const subj = document.getElementById('prompt-subject').innerText;
+            document.getElementById('current-task-display').innerText = subj;
+            navTo('workspace');
+            showToast('Идея отправлена в мастерскую!');
+        }
+
+        // PRO Feature Lock Interceptor
+        function promptProFeature(featureName) {
+            if (state.isProUser) {
+                showToast(`Запуск функции: ${featureName}`, '🚀');
+            } else {
+                showToast(`Функция "${featureName}" доступна в PRO! Redirecting...`, '👑');
+                setTimeout(() => navTo('pro'), 1200);
+            }
+        }
+
+        // Exercise Launcher
+        function startExercise(exName) {
+            document.getElementById('current-task-display').innerText = exName;
+            navTo('workspace');
+            showToast(`Упражнение "${exName}" начато!`, '🏋️');
+        }
+
+        // Dual Art Mode Switcher (Digital vs Traditional)
+        function switchArtMode(mode) {
+            const digitalBtn = document.getElementById('tab-art-digital');
+            const tradBtn = document.getElementById('tab-art-trad');
+            const digitalView = document.getElementById('art-mode-digital-view');
+            const tradView = document.getElementById('art-mode-trad-view');
+
+            if (mode === 'digital') {
+                digitalBtn.className = "px-4 py-2 font-pixel text-xs bg-[#FFC000] text-[#111111] nb-border flex items-center gap-2";
+                tradBtn.className = "px-4 py-2 font-pixel text-xs bg-white text-[#111111] hover:bg-gray-200 flex items-center gap-2";
+                digitalView.classList.remove('hidden');
+                tradView.classList.add('hidden');
+                setTimeout(resizeCanvas, 100);
+            } else {
+                tradBtn.className = "px-4 py-2 font-pixel text-xs bg-[#FFC000] text-[#111111] nb-border flex items-center gap-2";
+                digitalBtn.className = "px-4 py-2 font-pixel text-xs bg-white text-[#111111] hover:bg-gray-200 flex items-center gap-2";
+                tradView.classList.remove('hidden');
+                digitalView.classList.add('hidden');
+            }
+        }
+
+        // Canvas Drawing Engine
+        let canvas, ctx;
+
+        function initCanvas() {
+            canvas = document.getElementById('digital-canvas');
+            ctx = canvas.getContext('2d');
+
+            resizeCanvas();
+
+            // Mouse Event Listeners
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseleave', stopDrawing);
+
+            // Touch Event Listeners for Mobile
+            canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+            canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+            canvas.addEventListener('touchend', stopDrawing);
+        }
+
+        function resizeCanvas() {
+            if (!canvas) return;
+            const container = canvas.parentElement;
+            const tempImg = ctx ? ctx.getImageData(0, 0, canvas.width, canvas.height) : null;
+            
+            canvas.width = Math.min(container.clientWidth - 20, 800);
+            canvas.height = 420;
+
+            if (tempImg) {
+                ctx.putImageData(tempImg, 0, 0);
+            } else {
+                clearCanvas();
+            }
+        }
+
+        function startDrawing(e) {
+            state.isDrawing = true;
+            draw(e);
+        }
+
+        function stopDrawing() {
+            state.isDrawing = false;
+            if (ctx) ctx.beginPath();
+        }
+
+        function draw(e) {
+            if (!state.isDrawing) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            ctx.lineWidth = state.brushSize;
+            ctx.lineCap = 'round';
+
+            if (state.canvasTool === 'eraser') {
+                ctx.strokeStyle = '#FFFFFF';
+            } else {
+                ctx.strokeStyle = state.brushColor;
+            }
+
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        function handleTouchStart(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousedown', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        }
+
+        function handleTouchMove(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousemove', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        }
+
+        function selectTool(tool) {
+            state.canvasTool = tool;
+            document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('tool-' + tool).classList.add('active');
+        }
+
+        function updateBrushSize(val) {
+            state.brushSize = val;
+            document.getElementById('brush-size-val').innerText = val + ' px';
+        }
+
+        function setCustomColor(color) {
+            state.brushColor = color;
+            document.getElementById('color-picker').value = color;
+            selectTool('brush');
+        }
+
+        function clearCanvas() {
+            if (!ctx) return;
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function publishDigitalArt() {
+            const title = document.getElementById('current-task-display').innerText;
+            const newItem = {
+                id: Date.now(),
+                title: title,
+                author: 'Арт-Ниндзя #4082',
+                type: 'Цифра',
+                isPro: state.isProUser,
+                likes: 1,
+                icon: '🎨',
+                color: '#FFC000'
+            };
+            
+            state.galleryItems.unshift(newItem);
+            renderGallery();
+            renderProfileGallery();
+            showToast('Цифровой рисунок опубликован!', '🎉');
+            navTo('gallery');
+        }
+
+        // Traditional Sketchbook Preview Logic
+        function previewTradImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('trad-preview-img').src = e.target.result;
+                    document.getElementById('trad-preview-container').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function publishTradArt() {
+            const newItem = {
+                id: Date.now(),
+                title: 'Страница из скетчбука',
+                author: 'Арт-Ниндзя #4082',
+                type: 'Традишка',
+                isPro: state.isProUser,
+                likes: 1,
+                icon: '📖',
+                color: '#D82B66'
+            };
+
+            state.galleryItems.unshift(newItem);
+            renderGallery();
+            renderProfileGallery();
+            showToast('Скетч сфотографирован и опубликован!', '📸');
+            navTo('gallery');
+        }
+
+        // Render Community Gallery Cards
+        function renderGallery() {
+            const grid = document.getElementById('gallery-grid');
+            grid.innerHTML = '';
+
+            state.galleryItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-white text-[#111111] p-5 nb-box flex flex-col justify-between space-y-4';
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="h-44 bg-gray-100 nb-border flex items-center justify-center text-6xl relative" style="background-color: ${item.color}20">
+                            <span>${item.icon}</span>
+                            <span class="absolute top-2 left-2 bg-white text-[#111111] text-[10px] font-pixel px-2 py-0.5 nb-border">${item.type}</span>
+                            ${item.isPro ? '<span class="absolute top-2 right-2 bg-[#D82B66] text-white text-[9px] font-pixel px-2 py-0.5 nb-border"><i class="fa-solid fa-crown text-[#FFC000]"></i> PRO</span>' : ''}
+                        </div>
+                        <div>
+                            <h3 class="font-pixel text-base text-[#111111] uppercase">${item.title}</h3>
+                            <p class="text-xs font-bold text-gray-500">Автор: ${item.author}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between border-t-2 border-[#111111] pt-3">
+                        <button onclick="likeItem(${item.id}, this)" class="text-xs font-bold flex items-center gap-1.5 hover:text-[#D82B66]">
+                            <i class="fa-solid fa-heart text-red-500"></i> <span>${item.likes}</span>
+                        </button>
+                        <span class="text-[10px] font-pixel text-gray-400">#SPARK_ART</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderProfileGallery() {
+            const grid = document.getElementById('profile-gallery-grid');
+            grid.innerHTML = '';
+
+            const userWorks = state.galleryItems.filter(i => i.author === 'Арт-Ниндзя #4082');
+            
+            if (userWorks.length === 0) {
+                grid.innerHTML = '<p class="text-sm font-semibold text-gray-500 col-span-3">Вы еще не опубликовали ни одной работы.</p>';
+                return;
+            }
+
+            userWorks.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'p-3 bg-gray-50 nb-border flex items-center gap-3';
+                card.innerHTML = `
+                    <div class="w-12 h-12 bg-[#FFC000] nb-border flex items-center justify-center text-xl">
+                        ${item.icon}
+                    </div>
+                    <div class="overflow-hidden">
+                        <h4 class="font-pixel text-xs truncate">${item.title}</h4>
+                        <span class="text-[10px] font-bold text-gray-500">${item.type} • ❤️ ${item.likes}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function likeItem(id, btn) {
+            const item = state.galleryItems.find(i => i.id === id);
+            if (item) {
+                item.likes++;
+                btn.querySelector('span').innerText = item.likes;
+                showToast('Спасибо за лайк!');
+            }
+        }
+
+        // PRO Tariff Page Toggles & Modal
+        function toggleBillingCycle() {
+            const circle = document.getElementById('toggle-circle');
+            const priceDisplay = document.getElementById('price-display');
+            const pricePeriod = document.getElementById('price-period');
+            const labelMonthly = document.getElementById('label-monthly');
+            const labelYearly = document.getElementById('label-yearly');
+
+            if (state.billingCycle === 'monthly') {
+                state.billingCycle = 'yearly';
+                circle.style.transform = 'translateX(32px)';
+                priceDisplay.innerText = '3 740 ₽';
+                pricePeriod.innerText = ' / год (311 ₽/мес)';
+                labelMonthly.classList.replace('text-[#FFC000]', 'text-gray-400');
+                labelYearly.classList.replace('text-gray-400', 'text-[#FFC000]');
+            } else {
+                state.billingCycle = 'monthly';
+                circle.style.transform = 'translateX(0px)';
+                priceDisplay.innerText = '390 ₽';
+                pricePeriod.innerText = ' / месяц';
+                labelYearly.classList.replace('text-[#FFC000]', 'text-gray-400');
+                labelMonthly.classList.replace('text-gray-400', 'text-[#FFC000]');
+            }
+        }
+
+        function openCheckoutModal() {
+            const modal = document.getElementById('checkout-modal');
+            const planName = document.getElementById('modal-plan-name');
+            const payAmount = document.getElementById('modal-pay-amount');
+
+            if (state.billingCycle === 'yearly') {
+                planName.innerText = 'SPARK PRO (Годовой Тариф -20%)';
+                payAmount.innerText = '3 740 ₽';
+            } else {
+                planName.innerText = 'SPARK PRO (Месячный Тариф)';
+                payAmount.innerText = '390 ₽';
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeCheckoutModal() {
+            const modal = document.getElementById('checkout-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function handlePaymentSubmit(e) {
+            e.preventDefault();
+            closeCheckoutModal();
+
+            // Grant PRO status locally
+            state.isProUser = true;
+
+            // Update UI across site
+            document.getElementById('profile-pro-badge').innerText = 'PRO';
+            document.getElementById('profile-pro-badge').className = 'absolute -bottom-2 -right-2 bg-[#FFC000] text-[#111111] text-[9px] font-pixel px-2 py-1 nb-border';
+            
+            document.getElementById('profile-status-pill').innerText = '🔥 PRO Премиум Художник';
+            document.getElementById('profile-status-pill').className = 'bg-[#D82B66] text-white text-xs font-pixel px-3 py-1 nb-border';
+
+            showToast('ПОЗДРАВЛЯЕМ! PRO ПОДПИСКА АКТИВИРОВАНА!', '👑');
+            navTo('profile');
+        }
+
+        // Window Onload Initialization
+        window.onload = function() {
+            initCanvas();
+            renderGallery();
+            renderProfileGallery();
+            
+            // Handle window resize for dynamic responsive canvas
+            window.addEventListener('resize', resizeCanvas);
+        };
+    </script>
+</body>
+</html>
